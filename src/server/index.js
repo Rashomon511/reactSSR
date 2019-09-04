@@ -1,12 +1,25 @@
 import express from 'express';
+import { matchRoutes } from "react-router-config";
 import { render } from './utils';
+import { getStore } from '../store';
+import Routes from '../Routes';
 
 const app = express();
 app.use(express.static('public')) // 到服务器文件夹下pulic下面找js文件
 
 
 app.get('*', function(req, res){
-    res.send(render(req))
+    const store = getStore()
+    const matchedRoutes = matchRoutes(Routes, req.path)
+    const promises = [];
+    matchedRoutes.forEach(item => {
+        if (item.route.loadData) {
+            promises.push(item.route.loadData(store))
+        }
+    })
+    Promise.all(promises).then(() => {
+        res.send(render(req, store, Routes))
+    })
 })
 
 const server = app.listen(3000, ()=> {
