@@ -1,5 +1,6 @@
 import express from 'express';
 import { matchRoutes } from "react-router-config";
+import proxy from 'express-http-proxy';
 import { render } from './utils';
 import { getStore } from '../store';
 import Routes from '../Routes';
@@ -7,6 +8,11 @@ import Routes from '../Routes';
 const app = express();
 app.use(express.static('public')) // 到服务器文件夹下pulic下面找js文件
 
+app.use('/api',proxy('http://47.95.113.63', {
+    proxyReqPathResolver: function (req) {
+      return '/ssr/api' + req.url
+    }
+  }));
 
 app.get('*', function(req, res){
     const store = getStore()
