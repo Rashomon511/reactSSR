@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Header from '../../components/Header';
 import { getHomeList } from './store/action';
 
 class Home extends Component {
@@ -19,7 +18,6 @@ class Home extends Component {
         const { name, list } = this.props;
         return (
             <div>
-                <Header />
                 <div> {name}</div>
                 {
                     list.map((item, index) => {

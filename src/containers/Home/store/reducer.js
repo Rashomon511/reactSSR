@@ -6,7 +6,7 @@ const defaultState = {
 
 export default (state = defaultState, action) => {
     switch(action.type) {
-        case 'CHANGE_LIST':
+        case CHANGE_LIST:
             return {
                 ...state,
                 newList: action.list
