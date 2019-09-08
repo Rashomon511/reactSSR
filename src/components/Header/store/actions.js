@@ -5,27 +5,27 @@ const changeLogin = (value) => ({
 	value
 });
 
-export const getHeaderInfo = () => {
-	return (dispatch, getState, axiosInstance) => {
-		return axiosInstance.get('/api/isLogin.json?secret=PP87ANTIPIRATE')
-			.then((res) => {
-				dispatch(changeLogin(res.data.data.login))
-			});
-	}
-} 
-
 export const login = () => {
 	return (dispatch, getState, axiosInstance) => {
-		return axiosInstance.get('/api/login.json?secret=PP87ANTIPIRATE')
+		return axiosInstance.get('/api/login.json')
 			.then((res) => {
-				dispatch(changeLogin(res.data.data.login))
+				dispatch(changeLogin(true))
 			});
 	}
 } 
 
 export const logout = () => {
 	return (dispatch, getState, axiosInstance) => {
-		return axiosInstance.get('/api/logout.json?secret=PP87ANTIPIRATE')
+		return axiosInstance.get('/api/logout.json')
+			.then((res) => {
+				dispatch(changeLogin(false))
+			});
+	}
+} 
+
+export const getHeaderInfo = () => {
+	return (dispatch, getState, axiosInstance) => {
+		return axiosInstance.get('/api/isLogin.json')
 			.then((res) => {
 				dispatch(changeLogin(res.data.data.login))
 			});

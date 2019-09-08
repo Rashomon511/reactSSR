@@ -1,16 +1,16 @@
 import { CHANGE_LIST } from './constants';
 
 const changeList = (list) => ({
-    type: CHANGE_LIST,
-    list
+	type: CHANGE_LIST,
+	list
 })
 
 export const getHomeList = () => {
 	return (dispatch, getState, axiosInstance) => {
-		return axiosInstance.get('/api/news.json?secret=PP87ANTIPIRATE')
+		return axiosInstance.get('/api/news.json')
 			.then((res) => {
 				const list = res.data.data;
-                dispatch(changeList([1,2,3]))
+				dispatch(changeList(list))
 			});
 	}
 } 
