@@ -1,22 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from "react-helmet";
 import { getHomeList } from './store/actions';
+import styles from './style.css';
+import withStyle from '../../withStyle';
 
 class Home extends Component {
 
 	getList() {
 		const { list } = this.props;
-		return list.map(item => <div key={item.id}>{item.title}</div>)
+		return list.map(item => <div className={styles.item} key={item.id}>{item.title}</div>)
 	}
 
 	render() {
 		return (
-			<div>
-				{this.getList()}
-				<button onClick={()=>{alert('click1')}}>
-					click
-				</button>
-			</div>
+			<Fragment>
+				<Helmet>
+					<title>这是DellLee的SSR新闻页面 - 丰富多彩的资讯</title>
+					<meta name="description" content="这是DellLee的SSR新闻页面 - 丰富多彩的资讯" />
+				</Helmet>
+				<div className={styles.container}>
+					{this.getList()}
+				</div>
+			</Fragment>
 		)
 	}
 
@@ -27,11 +33,6 @@ class Home extends Component {
 	}
 }
 
-Home.loadData = (store) => {
-	// 这个函数，负责在服务器端渲染之前，把这个路由需要的数据提前加载好
-	return store.dispatch(getHomeList())
-}
-
 const mapStateToProps = state => ({
 	list: state.home.newsList
 });
@@ -40,6 +41,12 @@ const mapDispatchToProps = dispatch => ({
 	getHomeList() {
 		dispatch(getHomeList());
 	}
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+const ExportHome = connect(mapStateToProps, mapDispatchToProps)(withStyle(Home, styles));
+
+ExportHome.loadData = (store) => {
+	return store.dispatch(getHomeList())
+}
+
+export default ExportHome;
